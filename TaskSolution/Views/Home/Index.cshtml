@@ -1,0 +1,155 @@
+﻿@model TaskSolution.Models.EmployeesViewModel
+
+@{
+    ViewBag.Title = "All Employees";
+}
+
+<h3>All Employees</h3>
+<p id="pForError" visible="false"></p>
+
+<p>
+    @Html.ActionLink("Add New Employee", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<input type="file" class="input-box" name="fileToImport" id="fileToImport" />
+                <input type="submit" value="Upload" />}
+<div>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+@Html.TextBoxFor(model => model.Surname, new { @class = "form-control" })
+                @Html.EnumDropDownListFor(model => model.Criteria)
+                                @Html.EnumDropDownListFor(model => model.Order)
+
+                                                <input type="submit" value="filter" />}
+</div>
+
+<h3>
+    @if (ViewBag.Result != null)
+    {
+        foreach (var item in ViewBag.Result as List<string>)
+        {
+<p>@item</p>}
+            }
+</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            PayrollNumber
+        </th>
+        <th>
+            Forename
+        </th>
+        <th>
+            Surname
+        </th>
+        <th>
+            DateOfBirth
+        </th>
+        <th>
+            Telephone
+        </th>
+        <th>
+            Mobile
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Address2
+        </th>
+        <th>
+            PostCode
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            StartDate
+        </th>
+        <th>
+            Record functions
+        </th>
+    </tr>
+    <tbody>
+        @if (Model.Employees != null)
+        {
+            var employees = Model.Employees;
+            if (employees != null)
+            {
+                foreach (var item in Model.Employees)
+                {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeId)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeePayrollNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeForename)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeSurname)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeDateOfBirth)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeTelephone)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeMobile)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeAddress)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeAddress2)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeePostCode)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeEmail)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EmployeeStartDate)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeId })        
+        @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeId }, new { onclick = "return confirm('Are you sure you wish to delete this Tarrif?');" })
+
+    </td>
+</tr>}
+                }
+            }
+    </tbody>
+</table>
+
+
+<div id='Paging' style="text-align:center">
+    <div class="form-group row">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                if (Model.CurrentPage == i)
+                {
+                    <li>
+                        <a style="color:black;" href="@Url.Action("Index","Home", new { page = i, Surname=Model.Surname, Category=Model.Category, Criteria =Model.Criteria, Order = Model.Order} )">@i</a>
+                    </li> }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Index","Home", new { page = i, Surname=Model.Surname, Category=Model.Category, Criteria =Model.Criteria, Order = Model.Order} )">@i</a>
+                    </li>                
+                }
+            }
+        </ul>
+    </div>
+</div>
